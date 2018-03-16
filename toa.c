@@ -185,14 +185,14 @@ inet_getname_toa(struct socket *sock, struct sockaddr *uaddr, int *uaddr_len, in
  * @return NULL if fail new socket if succeed.
  */
 static struct sock *
-tcp_v4_syn_recv_sock_toa(struct sock *sk, struct sk_buff *skb, struct request_sock *req, struct dst_entry *dst)
+tcp_v4_syn_recv_sock_toa(const struct sock *sk, struct sk_buff *skb, struct request_sock *req, struct dst_entry *dst,struct request_sock *req_unhash,bool *own_req)
 {
         struct sock *newsock = NULL;
 
         //TOA_DBG("tcp_v4_syn_recv_sock_toa called\n");
 
         /* call orginal one */
-        newsock = tcp_v4_syn_recv_sock(sk, skb, req, dst);
+        newsock = tcp_v4_syn_recv_sock(sk, skb, req, dst,req_unhash, own_req);
 
         /* set our value if need */
         if (NULL != newsock && NULL == newsock->sk_user_data) {
